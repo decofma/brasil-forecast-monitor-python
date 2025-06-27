@@ -8,7 +8,7 @@ def generate_random_string(length=32):
     characters = string.ascii_letters + string.digits + string.punctuation
     return ''.join(secrets.choice(characters) for i in range(length))
 
-app.storage.secret = generate_random_string()
+# app.storage.secret = generate_random_string()
 
 # --- 1. ESTRUTURA DE DADOS DAS CAPITAIS  ---
 CAPITAIS = {
@@ -172,11 +172,11 @@ def weather_dashboard():
 
   
 # --- PARA RODAR LOCAL ---
-# ui.run(
-#     storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
-#     uvicorn_reload_dirs='.',
-#     uvicorn_reload_includes='*.py',
-#     title='Previsão do Tempo',
-#     favicon='☀️',
-#     dark=True
-# )
+ui.run(
+    storage_secret=generate_random_string(),
+    uvicorn_reload_dirs='.',
+    uvicorn_reload_includes='*.py',
+    title='Previsão do Tempo',
+    favicon='☀️',
+    dark=True
+)
