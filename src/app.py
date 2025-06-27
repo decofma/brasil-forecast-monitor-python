@@ -91,8 +91,8 @@ def weather_dashboard():
             ui.skeleton().classes('w-64 h-8 mx-auto my-4')
             ui.skeleton().classes('w-full h-60 mx-auto')
             with ui.row().classes('w-full gap-4 p-4 justify-center'):
-                ui.skeleton().classes('w-full max-w-lg h-56')
-                ui.skeleton().classes('w-full max-w-lg h-56')
+                ui.skeleton().classes('w-full max-w-lg h-96')
+                ui.skeleton().classes('w-full max-w-lg h-96')
 
     def display_data(weather_data, capital_nome, capital_lat, capital_lon):
         ui.label(f'Dados Meteorológicos para {capital_nome}').classes('text-2xl font-bold mt-4 mb-2 text-center')
@@ -103,7 +103,7 @@ def weather_dashboard():
 
         with ui.row().classes('w-full gap-4 p-4 justify-center'):
             current = weather_data['current']
-            with ui.card().classes('w-full max-w-lg mx-auto items-center'):
+            with ui.card().classes('w-full max-w-lg h-96 mx-auto items-center'):
                 ui.label('Dados Atuais').classes('text-lg font-bold')
                 with ui.grid(columns=2).classes('w-full gap-4 p-4'):
                     with ui.element('div').classes('text-center'):
@@ -118,38 +118,38 @@ def weather_dashboard():
                     with ui.element('div').classes('text-center border-t pt-2'):
                         ui.label('Direção do Vento').classes('text-sm font-semibold text-gray-500')
                         ui.label(f"{current['wind_direction_10m']} °").classes('text-xl')
-            with ui.card().classes('w-full max-w-lg mx-auto items-center'):
+            with ui.card().classes('w-full max-w-lg h-96 mx-auto items-center'):
                 ui.label('Previsão do Tempo').classes('text-lg font-bold')
                 hourly_data = weather_data['hourly']
-            horas_formatadas = [t[11:16] for t in hourly_data['time']]
-            temperaturas = hourly_data['temperature_2m']
-            prob_chuva = hourly_data['precipitation_probability']
+                horas_formatadas = [t[11:16] for t in hourly_data['time']]
+                temperaturas = hourly_data['temperature_2m']
+                prob_chuva = hourly_data['precipitation_probability']
             # --- FIM DA ALTERAÇÃO ---
 
-            figure = {
-                'data': [
-                    {
-                        'type': 'scatter', 'mode': 'lines+markers', 'name': 'Temperatura',
-                        'x': horas_formatadas,
-                        'y': temperaturas,  # Alterado
-                        'yaxis': 'y1', 'line': {'color': '#d62728'}
-                    },
-                    {
-                        'type': 'bar', 'name': 'Prob. de Chuva',
-                        'x': horas_formatadas,
-                        'y': prob_chuva,  # Alterado
-                        'yaxis': 'y2', 'marker': {'color': '#1f77b4'}
+                figure = {
+                    'data': [
+                        {
+                            'type': 'scatter', 'mode': 'lines+markers', 'name': 'Temperatura',
+                            'x': horas_formatadas,
+                            'y': temperaturas,  # Alterado
+                            'yaxis': 'y1', 'line': {'color': '#d62728'}
+                        },
+                        {
+                            'type': 'bar', 'name': 'Prob. de Chuva',
+                            'x': horas_formatadas,
+                            'y': prob_chuva,  # Alterado
+                            'yaxis': 'y2', 'marker': {'color': '#1f77b4'}
+                        }
+                    ],
+                    'layout': {
+                        'title': {'text': 'Temperatura e Probabilidade de Chuva'},
+                        'xaxis': {'title': 'Hora'},
+                        'yaxis': {'title': 'Temperatura (°C)', 'titlefont': {'color': '#d62728'}, 'tickfont': {'color': '#d62728'}},
+                        'yaxis2': {'title': 'Prob. de Chuva (%)', 'titlefont': {'color': '#1f77b4'}, 'tickfont': {'color': '#1f77b4'}, 'overlaying': 'y', 'side': 'right', 'range': [0, 100]},
+                        'legend': {'orientation': 'h', 'y': 1.15, 'x': 0.5, 'xanchor': 'center'}
                     }
-                ],
-                'layout': {
-                    'title': {'text': 'Temperatura e Probabilidade de Chuva'},
-                    'xaxis': {'title': 'Hora'},
-                    'yaxis': {'title': 'Temperatura (°C)', 'titlefont': {'color': '#d62728'}, 'tickfont': {'color': '#d62728'}},
-                    'yaxis2': {'title': 'Prob. de Chuva (%)', 'titlefont': {'color': '#1f77b4'}, 'tickfont': {'color': '#1f77b4'}, 'overlaying': 'y', 'side': 'right', 'range': [0, 100]},
-                    'legend': {'orientation': 'h', 'y': 1.15, 'x': 0.5, 'xanchor': 'center'}
                 }
-            }
-            ui.plotly(figure).classes('w-full')
+                ui.plotly(figure).classes('w-full max-w-4xl h-full')
 
     async def update_weather_display(capital_selecionada: str):
         if not capital_selecionada:
