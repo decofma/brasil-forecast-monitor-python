@@ -72,8 +72,6 @@ def weather_dashboard():
             on_change=lambda e: update_weather_display(e.value)
         ).classes('w-72').props('dark dense standout="bg-blue-grey-2"')
         
-        ui.link('Home', '/').classes('text-white')
-
     with ui.column().classes('w-full items-center'):
         
         with ui.row(align_items='center').classes('text-sm text-gray-500 mt-2'):
@@ -154,4 +152,11 @@ def weather_dashboard():
     ui.timer(0.1, lambda: update_weather_display(seletor_capital.value), once=True)
     ui.timer(600, lambda: update_weather_display(seletor_capital.value) if seletor_capital.value else None)
 
-ui.run(storage_secret='MINHA_CHAVE_SECRETA_PARA_O_CACHE_123')
+ui.run(
+    storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
+    uvicorn_reload_dirs='.',
+    uvicorn_reload_includes='*.py',
+    title='Previsão do Tempo',
+    favicon='☀️',
+    dark=True
+)
