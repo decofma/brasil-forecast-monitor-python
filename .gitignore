@@ -1,0 +1,58 @@
+# # Ambientes Virtuais
+# Ignora a pasta do ambiente virtual, que contém as dependências instaladas.
+# Esta pasta pode ser recriada a qualquer momento com base no ficheiro requirements.txt.
+/.venv/
+/venv/
+/env/
+/.env/
+
+# # Cache e Ficheiros Compilados do Python
+# O Python gera estas pastas e ficheiros para acelerar a execução.
+# Eles não são necessários no repositório.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# # Ficheiros de IDEs e Editores
+# Ignora pastas e ficheiros de configuração específicos de ambientes de desenvolvimento.
+# Cada colaborador pode ter a sua própria configuração local.
+.idea/
+.vscode/
+*.swp
+
+# # Ficheiros de Sistema Operativo
+# Ignora ficheiros de metadados gerados pelo sistema operativo.
+.DS_Store
+Thumbs.db
+
+# # Ficheiros de Dependências e Construção (Build)
+# Ignora pacotes de distribuição e ficheiros gerados durante a instalação/construção.
+/dist/
+/build/
+/*.egg-info/
+/downloads/
+/lib/
+/lib64/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# # Ficheiros de Teste e Cobertura
+# Ignora relatórios e caches gerados por ferramentas de teste.
+.pytest_cache/
+.coverage
+htmlcov/
+
+# # Bases de Dados e Ficheiros de Log
+# Ignora bases de dados locais e ficheiros de log que não devem ir para o repositório.
+*.db
+*.sqlite3
+*.log
+
+# # Segredos e Configurações Locais
+# Um ficheiro .env é frequentemente usado para guardar chaves de API e segredos.
+# NUNCA envie este ficheiro para um repositório público.
+.env
+.venv
+venv
