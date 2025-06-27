@@ -1,7 +1,4 @@
-import numpy as np
 import requests
-import pandas as pd
-from datetime import datetime
 from nicegui import app, ui, run
 
 # --- 1. ESTRUTURA DE DADOS DAS CAPITAIS (Inalterado) ---
@@ -114,22 +111,36 @@ def weather_dashboard():
                         ui.label(f"{current['wind_direction_10m']} °").classes('text-xl')
             with ui.card().classes('w-full max-w-lg mx-auto items-center'):
                 ui.label('Previsão do Tempo').classes('text-lg font-bold')
-                df = pd.DataFrame(weather_data['hourly'])
-                df['time'] = pd.to_datetime(df['time'])
-                horas_formatadas = list(df['time'].dt.strftime('%H:%M'))
-                figure = {
-                    'data': [
-                        {'type': 'scatter', 'mode': 'lines+markers', 'name': 'Temperatura', 'x': horas_formatadas, 'y': list(df['temperature_2m']), 'yaxis': 'y1', 'line': {'color': '#d62728'}},
-                        {'type': 'bar', 'name': 'Prob. de Chuva', 'x': horas_formatadas, 'y': list(df['precipitation_probability']), 'yaxis': 'y2', 'marker': {'color': '#1f77b4'}}
-                    ],
-                    'layout': {
-                        'title': {'text': 'Temperatura e Probabilidade de Chuva'}, 'xaxis': {'title': 'Hora'},
-                        'yaxis': {'title': 'Temperatura (°C)', 'titlefont': {'color': '#d62728'}, 'tickfont': {'color': '#d62728'}},
-                        'yaxis2': {'title': 'Prob. de Chuva (%)', 'titlefont': {'color': '#1f77b4'}, 'tickfont': {'color': '#1f77b4'}, 'overlaying': 'y', 'side': 'right', 'range': [0, 100]},
-                        'legend': {'orientation': 'h', 'y': 1.15, 'x': 0.5, 'xanchor': 'center'}
+                hourly_data = weather_data['hourly']
+            horas_formatadas = [t[11:16] for t in hourly_data['time']]
+            temperaturas = hourly_data['temperature_2m']
+            prob_chuva = hourly_data['precipitation_probability']
+            # --- FIM DA ALTERAÇÃO ---
+
+            figure = {
+                'data': [
+                    {
+                        'type': 'scatter', 'mode': 'lines+markers', 'name': 'Temperatura',
+                        'x': horas_formatadas,
+                        'y': temperaturas,  # Alterado
+                        'yaxis': 'y1', 'line': {'color': '#d62728'}
+                    },
+                    {
+                        'type': 'bar', 'name': 'Prob. de Chuva',
+                        'x': horas_formatadas,
+                        'y': prob_chuva,  # Alterado
+                        'yaxis': 'y2', 'marker': {'color': '#1f77b4'}
                     }
+                ],
+                'layout': {
+                    'title': {'text': 'Temperatura e Probabilidade de Chuva'},
+                    'xaxis': {'title': 'Hora'},
+                    'yaxis': {'title': 'Temperatura (°C)', 'titlefont': {'color': '#d62728'}, 'tickfont': {'color': '#d62728'}},
+                    'yaxis2': {'title': 'Prob. de Chuva (%)', 'titlefont': {'color': '#1f77b4'}, 'tickfont': {'color': '#1f77b4'}, 'overlaying': 'y', 'side': 'right', 'range': [0, 100]},
+                    'legend': {'orientation': 'h', 'y': 1.15, 'x': 0.5, 'xanchor': 'center'}
                 }
-                ui.plotly(figure).classes('w-full max-w-4xl')
+            }
+            ui.plotly(figure).classes('w-full')
 
     async def update_weather_display(capital_selecionada: str):
         if not capital_selecionada:
@@ -152,11 +163,11 @@ def weather_dashboard():
     ui.timer(0.1, lambda: update_weather_display(seletor_capital.value), once=True)
     ui.timer(600, lambda: update_weather_display(seletor_capital.value) if seletor_capital.value else None)
 
-# ui.run(
-#     storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
-#     uvicorn_reload_dirs='.',
-#     uvicorn_reload_includes='*.py',
-#     title='Previsão do Tempo',
-#     favicon='☀️',
-#     dark=True
-# )
+ui.run(
+    storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
+    uvicorn_reload_dirs='.',
+    uvicorn_reload_includes='*.py',
+    title='Previsão do Tempo',
+    favicon='☀️',
+    dark=True
+)
