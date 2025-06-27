@@ -10,7 +10,7 @@ def generate_random_string(length=32):
 
 app.storage.secret = generate_random_string()
 
-# --- 1. ESTRUTURA DE DADOS DAS CAPITAIS (Inalterado) ---
+# --- 1. ESTRUTURA DE DADOS DAS CAPITAIS  ---
 CAPITAIS = {
     'Aracaju': {'lat': -10.9472, 'lon': -37.0731}, 'Belém': {'lat': -1.4558, 'lon': -48.4902},
     'Belo Horizonte': {'lat': -19.9167, 'lon': -43.9345}, 'Boa Vista': {'lat': 2.8238, 'lon': -60.6753},
@@ -40,7 +40,7 @@ def get_weather_data(lat, lon):
         print(f"Erro ao buscar dados da API: {e}")
         return None
 
-# --- 3. PÁGINA HOME (Com a correção) ---
+# --- 3. PÁGINA HOME ---
 @ui.page('/')
 def home_page():
     """Página inicial que explica a aplicação."""
@@ -59,7 +59,6 @@ def home_page():
 
                 Clique no botão abaixo para começar!
             ''').classes('text-base')
-            # CORREÇÃO AQUI: Trocado ui.open por app.open
             ui.button('Acessar o Dashboard', on_click=lambda: ui.navigate.to('/dashboard'))
 
 # --- 4. DASHBOARD DE PREVISÃO DO TEMPO ---
@@ -124,20 +123,19 @@ def weather_dashboard():
                 horas_formatadas = [t[11:16] for t in hourly_data['time']]
                 temperaturas = hourly_data['temperature_2m']
                 prob_chuva = hourly_data['precipitation_probability']
-            # --- FIM DA ALTERAÇÃO ---
 
                 figure = {
                     'data': [
                         {
                             'type': 'scatter', 'mode': 'lines+markers', 'name': 'Temperatura',
                             'x': horas_formatadas,
-                            'y': temperaturas,  # Alterado
+                            'y': temperaturas,  
                             'yaxis': 'y1', 'line': {'color': '#d62728'}
                         },
                         {
                             'type': 'bar', 'name': 'Prob. de Chuva',
                             'x': horas_formatadas,
-                            'y': prob_chuva,  # Alterado
+                            'y': prob_chuva,  
                             'yaxis': 'y2', 'marker': {'color': '#1f77b4'}
                         }
                     ],
@@ -172,11 +170,13 @@ def weather_dashboard():
     ui.timer(0.1, lambda: update_weather_display(seletor_capital.value), once=True)
     ui.timer(600, lambda: update_weather_display(seletor_capital.value) if seletor_capital.value else None)
 
-ui.run(
-    storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
-    uvicorn_reload_dirs='.',
-    uvicorn_reload_includes='*.py',
-    title='Previsão do Tempo',
-    favicon='☀️',
-    dark=True
-)
+  
+# --- PARA RODAR LOCAL ---
+# ui.run(
+#     storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
+#     uvicorn_reload_dirs='.',
+#     uvicorn_reload_includes='*.py',
+#     title='Previsão do Tempo',
+#     favicon='☀️',
+#     dark=True
+# )
