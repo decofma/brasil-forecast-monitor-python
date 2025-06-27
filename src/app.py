@@ -1,5 +1,14 @@
+import secrets
+import string
 import requests
 from nicegui import app, ui, run
+
+def generate_random_string(length=32):
+    """Generate a random string of specified length."""
+    characters = string.ascii_letters + string.digits + string.punctuation
+    return ''.join(secrets.choice(characters) for i in range(length))
+
+app.storage.secret = generate_random_string()
 
 # --- 1. ESTRUTURA DE DADOS DAS CAPITAIS (Inalterado) ---
 CAPITAIS = {
