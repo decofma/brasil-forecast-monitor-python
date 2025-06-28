@@ -1,16 +1,7 @@
-import secrets
-import string
 import requests
 from nicegui import app, ui, run
 
-def generate_random_string(length=32):
-    """Generate a random string of specified length."""
-    characters = string.ascii_letters + string.digits + string.punctuation
-    return ''.join(secrets.choice(characters) for i in range(length))
-
-# app.storage.secret = generate_random_string()
-
-# --- 1. ESTRUTURA DE DADOS DAS CAPITAIS  ---
+# --- 1. ESTRUTURA DE DADOS DAS CAPITAIS (Inalterado) ---
 CAPITAIS = {
     'Aracaju': {'lat': -10.9472, 'lon': -37.0731}, 'Belém': {'lat': -1.4558, 'lon': -48.4902},
     'Belo Horizonte': {'lat': -19.9167, 'lon': -43.9345}, 'Boa Vista': {'lat': 2.8238, 'lon': -60.6753},
@@ -40,7 +31,7 @@ def get_weather_data(lat, lon):
         print(f"Erro ao buscar dados da API: {e}")
         return None
 
-# --- 3. PÁGINA HOME ---
+# --- 3. PÁGINA HOME (Com a correção) ---
 @ui.page('/')
 def home_page():
     """Página inicial que explica a aplicação."""
@@ -59,6 +50,7 @@ def home_page():
 
                 Clique no botão abaixo para começar!
             ''').classes('text-base')
+            # CORREÇÃO AQUI: Trocado ui.open por app.open
             ui.button('Acessar o Dashboard', on_click=lambda: ui.navigate.to('/dashboard'))
 
 # --- 4. DASHBOARD DE PREVISÃO DO TEMPO ---
@@ -90,8 +82,8 @@ def weather_dashboard():
             ui.skeleton().classes('w-64 h-8 mx-auto my-4')
             ui.skeleton().classes('w-full h-60 mx-auto')
             with ui.row().classes('w-full gap-4 p-4 justify-center'):
-                ui.skeleton().classes('w-full max-w-lg h-96')
-                ui.skeleton().classes('w-full max-w-lg h-96')
+                ui.skeleton().classes('w-full max-w-lg h-56')
+                ui.skeleton().classes('w-full max-w-lg h-56')
 
     def display_data(weather_data, capital_nome, capital_lat, capital_lon):
         ui.label(f'Dados Meteorológicos para {capital_nome}').classes('text-2xl font-bold mt-4 mb-2 text-center')
@@ -170,10 +162,8 @@ def weather_dashboard():
     ui.timer(0.1, lambda: update_weather_display(seletor_capital.value), once=True)
     ui.timer(600, lambda: update_weather_display(seletor_capital.value) if seletor_capital.value else None)
 
-  
-# --- PARA RODAR LOCAL ---
 ui.run(
-    storage_secret=generate_random_string(),
+    storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
     uvicorn_reload_dirs='.',
     uvicorn_reload_includes='*.py',
     title='Previsão do Tempo',
