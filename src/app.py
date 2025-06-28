@@ -1,5 +1,6 @@
 import requests
 from nicegui import app, ui, run
+app.storage.secret = 'UMA_CHAVE_SECRETA_MUITO_SEGURA_123'
 
 # --- 1. ESTRUTURA DE DADOS DAS CAPITAIS (Inalterado) ---
 CAPITAIS = {
@@ -162,11 +163,11 @@ def weather_dashboard():
     ui.timer(0.1, lambda: update_weather_display(seletor_capital.value), once=True)
     ui.timer(600, lambda: update_weather_display(seletor_capital.value) if seletor_capital.value else None)
 
-ui.run(
-    storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
-    uvicorn_reload_dirs='.',
-    uvicorn_reload_includes='*.py',
-    title='Previsão do Tempo',
-    favicon='☀️',
-    dark=True
-)
+# ui.run(
+#     storage_secret='CHAVE_SECRETA_PODE_SER_QUALQUER_COISA_123',
+#     uvicorn_reload_dirs='.',
+#     uvicorn_reload_includes='*.py',
+#     title='Previsão do Tempo',
+#     favicon='☀️',
+#     dark=True
+# )
